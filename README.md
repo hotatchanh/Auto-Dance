@@ -35,7 +35,7 @@ pip install mss
 
 ## Windows build (no terminal required)
 
-1. Build the executable (once per machine) from the repo root:
+1. Build the executable (once per machine):
 
 ```bat
 build_windows.bat
