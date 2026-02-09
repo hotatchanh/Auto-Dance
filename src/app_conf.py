@@ -19,13 +19,20 @@ class AppConf:
             for (item, val) in self._parser.items(section):
                 self._conf[section][item] = self.__literal_eval(val)
 
+    def ensure_section(self, section: str):
+        if not self._parser.has_section(section):
+            self._parser.add_section(section)
+        if section not in self._conf:
+            self._conf[section] = {}
+
     def get(self, section: str, item: str):
         if section in self._conf:
             if item in self._conf[section]:
                 return self._conf[section][item]
 
     def set(self, section: str, item: str, val):
-        self._parser.set(section, item, val)
+        self.ensure_section(section)
+        self._parser.set(section, item, str(val))
         with open(self._conf_file, "w") as f:
             self._parser.write(f)
 
