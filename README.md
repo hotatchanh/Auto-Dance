@@ -35,15 +35,13 @@ pip install mss
 
 ## Windows build (no terminal required)
 
-1. Build the executable (once per machine) from the repo root:
+1. Build the executable (once per machine):
 
 ```bat
 build_windows.bat
 ```
 
 2. Run the generated `AutoDance.exe` from the `dist` folder.
-
-If the build fails, open `build_log.txt` for details (missing dependencies, etc.).
 
 
 ## How it works?
