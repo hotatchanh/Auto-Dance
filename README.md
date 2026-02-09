@@ -1,11 +1,3 @@
-# Auto Audition Game Hack Software
-
-Auto play Audition game by using basic image processing techniques.
-
-This project was done in 2 days for the purpose of killing my time.
-
-Commercializing this project is prohibited and illegal.
-
 
 ## Results
 
