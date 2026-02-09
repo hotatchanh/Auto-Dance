@@ -1,6 +1,8 @@
 import time
 
 from pywinauto.application import Application, WindowSpecification
+from pywinauto import handleprops
+from pywinauto.findwindows import find_windows
 
 from .app_conf import AppConf
 from .keyboard_ctrl import KeyboardCtrl
@@ -34,3 +36,13 @@ class IoControl:
         for key in keys:
             KeyboardCtrl.press_and_release(key)
             time.sleep(self.key_typing_sleep)
+
+    @staticmethod
+    def find_audition_pid(window_title: str = "Audition"):
+        try:
+            handles = find_windows(title_re=window_title)
+        except Exception:
+            return None
+        if not handles:
+            return None
+        return handleprops.processid(handles[0])
