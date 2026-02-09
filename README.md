@@ -25,12 +25,25 @@ pip install mss
 
 2. Clone `example-app.conf` and rename to `app.conf`
 
-3. Find your game PID in Task Manager and modify the `pid` item in `app.conf` file.
+3. Run `app.py` file with admin permission (GUI).
+   - Use **Auto Detect** to find the Audition PID automatically.
+   - You can still edit `app.conf` manually if needed, but the GUI can save it for you.
+4. Start the controller from the GUI.
+    - Click **Measure Speed** to recompute the speed.
+    - Click **Speed +** or **Speed -** to adjust the speed.
+    - Click **Stop** to quit the program.
 
-4. Run `app.py` file with admin permission.
-    - Press `F5` button if you want to recompute the speed.
-    - Press `F6` or `F7` button if you want to adjust the perfect time.
-    - Press `backspace` to quit program
+## Windows build (no terminal required)
+
+1. Build the executable (once per machine) from the repo root:
+
+```bat
+build_windows.bat
+```
+
+2. Run the generated `AutoDance.exe` from the `dist` folder.
+
+If the build fails, open `build_log.txt` for details (missing dependencies, etc.).
 
 
 ## How it works?
