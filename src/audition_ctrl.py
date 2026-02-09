@@ -2,8 +2,6 @@ import signal
 import threading
 import time
 
-import keyboard
-
 from .app_conf import AppConf
 from .io_control import IoControl
 from .keyboard_ctrl import KeyDef
@@ -28,8 +26,10 @@ class AuditionCtrl:
     PERFECT_ADJUSTMENT_UNIT = 0.01
     RUN_SLEEP = 0.2
 
-    def __init__(self):
-        self.app_conf = AppConf(AuditionCtrl.CONF_FILE)
+    def __init__(self, conf_file: str = None, pid_override: int = None):
+        self.conf_file = conf_file or AuditionCtrl.CONF_FILE
+        self.pid_override = pid_override
+        self.app_conf = AppConf(self.conf_file)
 
         self.running = True
         self.speed = 1.0
@@ -48,9 +48,14 @@ class AuditionCtrl:
         self.app_conf.read()
 
         AuditionCtrl.PID = self.app_conf.get(AuditionCtrl.AUAU_SECTION, "pid")
+        if self.pid_override is not None:
+            AuditionCtrl.PID = self.pid_override
         AuditionCtrl.PERFECT_ADJUSTMENT_UNIT = self.app_conf.get(
             AuditionCtrl.AUAU_SECTION, "perfect_adjustment_unit"
         )
+
+        if not AuditionCtrl.PID:
+            raise ValueError("PID is not set. Update app.conf or use auto-detect in the GUI.")
 
         self.io_control.connect(pid=AuditionCtrl.PID)
         self.io_control.set_key_typing_sleep(
@@ -72,11 +77,6 @@ class AuditionCtrl:
 
         perfect_area = self.get_area_pos(AuditionCtrl.PERFECT_AREA)
         self.perfect_detector.set_perfect_area(perfect_area)
-
-        keyboard.add_hotkey("f5", self.measure_speed)
-        keyboard.add_hotkey("f6", self.increase_speed)
-        keyboard.add_hotkey("f7", self.decrease_speed)
-        keyboard.add_hotkey("f9", lambda : self.exit_handler(None, None))
 
         self.control_keys_thread = threading.Thread(target=self.control_keys)
         self.control_perfect_thread = threading.Thread(target=self.control_perfect)
@@ -104,6 +104,9 @@ class AuditionCtrl:
 
         while self.running:
             time.sleep(AuditionCtrl.RUN_SLEEP * 2)
+
+    def stop(self):
+        self.running = False
 
     def measure_speed(self):
         self.speed = self.perfect_detector.measure_speed()

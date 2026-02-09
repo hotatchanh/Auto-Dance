@@ -1,9 +1,9 @@
-from src import AuditionCtrl
+from src.gui_app import AuditionGui
 
 
 def main():
-    audition_ctrl = AuditionCtrl()
-    audition_ctrl.run()
+    gui = AuditionGui()
+    gui.run()
 
 
 if __name__ == "__main__":
